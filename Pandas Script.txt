@@ -1,0 +1,53 @@
+
+
+
+1) How-to-count-distance-to-the-previous-zero
+For each value, count the difference back to the previous zero (or the start of the Series,
+whichever is closer)
+create a new column 'Y'
+Consider a DataFrame df where there is an integer column 'X'
+import pandas as pd
+df = pd.DataFrame({'X': [7, 2, 0, 3, 4, 2, 5, 0, 3, 4]})
+
+
+
+import pandas as pd
+df=pd.DataFrame({'X':[7,2,0,3,4,2,5,0,3,4]})
+#print(df['X'])
+x = (df['X'] != 0).cumsum()
+#print(x)
+y = x != x.shift()
+#print(y)
+df['Y'] = y.groupby((y != y.shift()).cumsum()).cumsum()
+df
+
+
+
+
+
+
+
+
+2.Create a DatetimeIndex that contains each business day of 2015 and use it to index a
+Series of random numbers.
+
+import pandas as pd
+import numpy as np
+df = pd.date_range(start='2015-01-01', end='2015-12-31', freq='B') 
+s = pd.Series(np.random.rand(len(df)), index=df)
+print(s)
+
+
+3.Find the sum of the values in s for every Wednesday
+s[df.weekday_name == "Wednesday"].sum() 
+
+
+4.Average For each calendar month
+
+s.resample('M').mean()
+
+
+
+#For each group of four consecutive calendar months in s, find the date on which the highest value occurred.
+
+s.groupby(pd.Grouper(freq='4M')).max()
